@@ -1,7 +1,7 @@
 const HomePage = () => {
   return(
     <div>
-      <h2>Hackathon team</h2>
+      <h2>Hackathon team,,this is our first hackathon</h2>
     </div>
   )
 }
