@@ -5,22 +5,59 @@ import RecipeSuggestion from "./CustomComponents/resipieSuggestion";
 import Header from "./CustomComponents/header";
 import HeroSection from "./CustomComponents/heroSection";
 import MainPageTwo from "./CustomComponents/mainPageTwo";
-
+import HomeComponent from "./mainComponents/Home";
+import RecipeNutritionCalculator from "./NewPage/page";
+import CulinaryMagicAuth from "./login/login";
 export default function HomePage() {
   const [currentPage, setCurrentPage] = useState('hero');
 
   const renderPage = () => {
     switch(currentPage) {
+      case 'hero':
+        return <HomeComponent />;
       case 'search':
         return <App />;
       case 'suggestions':
         return <RecipeSuggestion />;
-      case 'main':
-        return <MainPageTwo />;
+      case 'RecipeNutritionCalculator':
+        return <RecipeNutritionCalculator />;
+      case 'login':
+        return <CulinaryMagicAuth />;
       default:
-        return <HeroSection />;
+        return <HomeComponent />;
     }
   };
+
+  const items = [
+    {
+      label: "About",
+      bgColor: "#0D0716",
+      textColor: "#fff",
+      links: [
+        { label: "Company", ariaLabel: "About Company" },
+        { label: "Careers", ariaLabel: "About Careers" }
+      ]
+    },
+    {
+      label: "Projects", 
+      bgColor: "#170D27",
+      textColor: "#fff",
+      links: [
+        { label: "Featured", ariaLabel: "Featured Projects" },
+        { label: "Case Studies", ariaLabel: "Project Case Studies" }
+      ]
+    },
+    {
+      label: "Contact",
+      bgColor: "#271E37", 
+      textColor: "#fff",
+      links: [
+        { label: "Email", ariaLabel: "Email us" },
+        { label: "Twitter", ariaLabel: "Twitter" },
+        { label: "LinkedIn", ariaLabel: "LinkedIn" }
+      ]
+    }
+  ];
 
   return(
     <div>
@@ -50,10 +87,17 @@ export default function HomePage() {
           Suggestions
         </button>
         <button 
-          onClick={() => setCurrentPage('main')}
+          onClick={() => setCurrentPage('RecipeNutritionCalculator')}
           className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
         >
           Main Page
+        </button>
+        
+        <button 
+          onClick={() => setCurrentPage('login')}
+          className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+        >
+          Login
         </button>
       </div>
     </div>

@@ -251,21 +251,21 @@ export default function RecipeSuggestion() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white p-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-gray-200 p-6">
       {/* Decorative elements */}
       <div className="floating-element absolute top-20 right-20 w-6 h-6 bg-orange-500 rounded-full opacity-60"></div>
       <div className="floating-element absolute bottom-40 left-16 w-8 h-8 bg-orange-400 rounded-full opacity-40"></div>
       <div className="absolute top-1/3 left-20 w-4 h-4 bg-orange-300 rounded-full opacity-30"></div>
       
       <div className="max-w-6xl mx-auto">
-        <h1 ref={titleRef} className="text-5xl md:text-6xl font-extrabold text-center mb-8 pt-6 text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">
+        <h1 ref={titleRef} className="text-5xl md:text-6xl font-extrabold text-center mb-8 pt-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400">
           🍳 Recipe Wizard
         </h1>
-        <p className="text-center text-orange-200 mb-12 max-w-2xl mx-auto">
+        <p className="text-center text-gray-300 mb-12 max-w-2xl mx-auto">
           Enter ingredients you have, and we'll suggest delicious recipes you can make!
         </p>
 
-        <div ref={inputRef} className="max-w-3xl mx-auto mb-8 p-6 bg-gray-800 rounded-2xl shadow-xl">
+        <div ref={inputRef} className="max-w-3xl mx-auto mb-8 p-6 bg-gray-800 rounded-2xl shadow-xl border border-gray-700">
           <form onSubmit={handleSubmit} className="mb-4">
             <div className="flex gap-2 mb-2">
               <input
@@ -278,7 +278,7 @@ export default function RecipeSuggestion() {
                 className={`flex-1 p-4 rounded-xl shadow-sm focus:outline-none focus:ring-2 border text-gray-900 placeholder-gray-500 ${
                   inputError 
                     ? 'border-red-500 focus:ring-red-500 bg-red-50' 
-                    : 'border-gray-300 focus:ring-orange-500 focus:border-orange-500'
+                    : 'border-gray-300 focus:ring-purple-500 focus:border-purple-500'
                 }`}
                 aria-label="Enter ingredient name"
                 aria-describedby={inputError ? "input-error" : undefined}
@@ -288,7 +288,7 @@ export default function RecipeSuggestion() {
               />
               <button
                 type="submit"
-                className="bg-orange-500 text-white px-6 py-3 rounded-xl hover:bg-orange-600 transition-all duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 shadow-md"
+                className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-xl hover:from-purple-700 hover:to-indigo-700 transition-all duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 shadow-md"
                 aria-label="Add ingredient to list"
               >
                 Add
@@ -304,7 +304,7 @@ export default function RecipeSuggestion() {
 
           <div className="mb-6">
             <div className="flex justify-between items-center mb-3">
-              <h2 className="text-xl font-semibold text-orange-200">Your Ingredients</h2>
+              <h2 className="text-xl font-semibold text-purple-200">Your Ingredients</h2>
               {ingredients.length > 0 && (
                 <button 
                   onClick={clearAllIngredients}
@@ -323,7 +323,7 @@ export default function RecipeSuggestion() {
                   <div
                     id={`ingredient-${ing.replace(/\s+/g, '-')}`}
                     key={ing}
-                    className="bg-orange-500 text-white px-4 py-2 rounded-full flex items-center gap-2 shadow-md"
+                    className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-2 rounded-full flex items-center gap-2 shadow-md"
                     role="listitem"
                   >
                     <span className="font-medium capitalize">{ing}</span>
@@ -347,7 +347,7 @@ export default function RecipeSuggestion() {
             className={`w-full py-4 rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 flex items-center justify-center ${
               ingredients.length === 0 || isLoading
                 ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                : 'bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700 focus:ring-orange-500 hover:shadow-lg'
+                : 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 focus:ring-purple-500 hover:shadow-lg'
             }`}
             aria-label="Generate recipe suggestions based on selected ingredients"
           >
@@ -368,10 +368,10 @@ export default function RecipeSuggestion() {
         </div>
 
         <div ref={suggestionsRef} className="mt-12">
-          {suggestions.length > 0 && (
-            <h2 className="text-3xl font-bold text-center mb-8 text-orange-200">
+            {suggestions.length > 0 && (
+            <h2 className="text-3xl font-bold text-center mb-8 text-purple-200">
               Recommended Recipes
-              <div className="h-1 w-24 bg-orange-500 rounded-full mx-auto mt-2"></div>
+              <div className="h-1 w-24 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full mx-auto mt-2"></div>
             </h2>
           )}
           
@@ -387,7 +387,7 @@ export default function RecipeSuggestion() {
                     whileHover={{ y: -5 }}
                     transition={{ type: "spring", stiffness: 300 }}
                     onClick={() => setSelectedRecipe(recipe)}
-                    className="bg-gray-800 p-4 rounded-2xl shadow-lg cursor-pointer border border-gray-700 hover:border-orange-500 transition-all duration-200 overflow-hidden group"
+                    className="bg-gray-800 p-4 rounded-2xl shadow-lg cursor-pointer border border-gray-700 hover:border-purple-500 transition-all duration-200 overflow-hidden group"
                     role="button"
                     tabIndex={0}
                     onKeyDown={(e) => {
@@ -405,7 +405,7 @@ export default function RecipeSuggestion() {
                         className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
                       />
-                      <div className="absolute top-3 right-3 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                      <div className="absolute top-3 right-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-bold px-2 py-1 rounded-full">
                         {recipe.matchPercentage}% match
                       </div>
                       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-3">
@@ -414,19 +414,19 @@ export default function RecipeSuggestion() {
                     </div>
                     
                     <div className="flex justify-between items-center mb-3">
-                      <span className="text-orange-400 text-sm font-medium">{recipe.cookingTime}</span>
+                      <span className="text-purple-300 text-sm font-medium">{recipe.cookingTime}</span>
                       <span className="text-gray-400 text-sm capitalize">{recipe.difficulty}</span>
                     </div>
                     
                     <div className="mb-4">
                       <p className="text-gray-300 text-sm line-clamp-2">
-                        <span className="font-medium text-orange-200">Matching ingredients: </span>
+                        <span className="font-medium text-purple-200">Matching ingredients: </span>
                         {recipe.ingredients.filter(i => ingredients.includes(i)).join(", ")}
                       </p>
                     </div>
                     
                     <div className="flex justify-between items-center">
-                      <span className="text-orange-300 text-xs">Click for details →</span>
+                      <span className="text-purple-300 text-xs">Click for details →</span>
                       <span className="text-gray-400 text-xs">
                         {recipe.matchCount}/{recipe.ingredients.length} ingredients
                       </span>

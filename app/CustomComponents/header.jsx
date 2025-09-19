@@ -116,10 +116,23 @@ const Header = () => {
     }, []);
 
     return(
-        <header 
-            ref={headerRef}
-        >
-
+        <header ref={headerRef} className="fixed top-0 inset-x-0 z-40">
+            <div className="backdrop-blur bg-black/30 border-b border-gray-700/60">
+                <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+                    <div ref={logoRef} className="flex items-center space-x-2">
+                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-indigo-600 animate-pulse-glow" />
+                        <span className="text-xl font-extrabold text-accent tracking-wide">Culinary Explorer</span>
+                    </div>
+                    <nav ref={navRef} className="hidden md:flex items-center space-x-6">
+                        <a className="text-gray-300 hover:text-white transition-colors cursor-default">Search</a>
+                        <a className="text-gray-300 hover:text-white transition-colors cursor-default">Suggestions</a>
+                        <a className="text-gray-300 hover:text-white transition-colors cursor-default">Tools</a>
+                    </nav>
+                    <div ref={menuRef} className="flex items-center space-x-2">
+                        <button className="px-3 py-1.5 rounded-lg btn-accent text-sm font-semibold shadow-dark">Get Started</button>
+                    </div>
+                </div>
+            </div>
         </header>
     )
 }

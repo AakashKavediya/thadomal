@@ -1,22 +1,24 @@
 @import "tailwindcss";
 
 :root {
-  /* Dark Theme Colors */
-  --background: #0f0f0f;
-  --foreground: #ffffff;
-  --card-bg: #1a1a1a;
-  --card-hover: #2a2a2a;
-  --accent-orange: #ff6b35;
-  --accent-orange-hover: #ff8c5a;
-  --text-primary: #ffffff;
-  --text-secondary: #a0a0a0;
-  --text-muted: #666666;
-  --border-color: #333333;
-  --shadow: rgba(0, 0, 0, 0.3);
+  /* Dark Theme Colors aligned with searchFood.jsx */
+  --background: #0b0b0f; /* near gray-900 */
+  --background-alt: #111827; /* gray-900 */
+  --foreground: #e5e7eb; /* gray-200 */
+  --card-bg: #1f2937; /* gray-800 */
+  --card-hover: #2d3748; /* darker hover */
+  --accent-primary: #8b5cf6; /* purple-500/600 */
+  --accent-secondary: #6366f1; /* indigo-500/600 */
+  --accent-on: #ffffff;
+  --text-primary: #e5e7eb;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --border-color: #374151; /* gray-700 */
+  --shadow: rgba(0, 0, 0, 0.5);
 }
 
 body {
-  background: var(--background);
+  background: linear-gradient(135deg, #0b0b0f 0%, #111827 100%);
   color: var(--foreground);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
   margin: 0;
@@ -40,9 +42,8 @@ body {
   background-color: var(--background);
 }
 
-.bg-card {
-  background-color: var(--card-bg);
-}
+.bg-card { background-color: var(--card-bg); }
+.bg-card-hover { background-color: var(--card-hover); }
 
 .text-primary {
   color: var(--text-primary);
@@ -60,14 +61,24 @@ body {
   border-color: var(--border-color);
 }
 
-.shadow-dark {
-  box-shadow: 0 4px 6px var(--shadow);
+.shadow-dark { box-shadow: 0 8px 24px var(--shadow); }
+
+/* Accent utilities */
+.btn-accent {
+  background-image: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  color: var(--accent-on);
+}
+.text-accent {
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 
 @font-face {
-  font-family: "MyCustomFontOne"; /* name you will use in CSS */
-  src: url('../public/text/Rubik_Moonrocks/RubikMoonrocks-Regular.ttf')
+  font-family: "MyCustomFontOne";
+  src: url('/text/Rubik_Moonrocks/RubikMoonrocks-Regular.ttf');
 }
 
 /* Custom animations for Cube Dreams */
