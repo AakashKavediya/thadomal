@@ -8,8 +8,15 @@ import MainPageTwo from "./CustomComponents/mainPageTwo";
 import HomeComponent from "./mainComponents/Home";
 import RecipeNutritionCalculator from "./NewPage/page";
 import CulinaryMagicAuth from "./login/login";
+import Loader from "./components/Loader";
 export default function HomePage() {
   const [currentPage, setCurrentPage] = useState('hero');
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1400);
+    return () => clearTimeout(timer);
+  }, []);
 
   const renderPage = () => {
     switch(currentPage) {
@@ -61,8 +68,9 @@ export default function HomePage() {
 
   return(
     <div>
+      {isLoading && <Loader />}
       <Header onNavigate={setCurrentPage} active={currentPage} />
-      <div className="pt-24 md:pt-28"> {/* Space for fixed header */}
+      <div className="pt-1 md:pt-10"> {/* Space for fixed header */}
         {renderPage()}
       </div>
       
