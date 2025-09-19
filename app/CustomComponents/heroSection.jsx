@@ -1,7 +1,11 @@
 "use client"
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import CookingModel3D from './CookingModel3D';
+
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
 
 const HeroSection = () => {
   const heroRef = useRef(null);
@@ -24,64 +28,68 @@ const HeroSection = () => {
         
         // Start main animations
         animatePageElements();
+        setupScrollAnimations();
+        setupInteractiveAnimations();
       }
     });
 
-    // Loading animation sequence
+    // Enhanced loading animation sequence
     loadingTl
       .fromTo('.loading-text', 
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8 }
+        { y: 50, opacity: 0, scale: 0.8 },
+        { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: 'back.out(1.7)' }
       )
       .fromTo('.loading-bar', 
-        { width: 0 },
-        { width: '100%', duration: 1.5, ease: 'power2.out' }
+        { width: 0, scaleX: 0 },
+        { width: '100%', scaleX: 1, duration: 1.5, ease: 'power2.out' }
       )
       .to('.loading-text', {
         y: -20,
         opacity: 0,
-        duration: 0.5
+        scale: 1.1,
+        duration: 0.5,
+        ease: 'power2.in'
       }, '-=0.3');
 
-    // Main page animations
+    // Enhanced main page animations
     const animatePageElements = () => {
       const mainTl = gsap.timeline();
       
-      // Animate navigation
+      // Animate navigation with stagger
       mainTl.fromTo(navRef.current.children,
-        { y: -50, opacity: 0 },
-        { y: 0, opacity: 1, stagger: 0.1, duration: 0.7 }
+        { y: -50, opacity: 0, rotationX: -90 },
+        { y: 0, opacity: 1, rotationX: 0, stagger: 0.1, duration: 0.7, ease: 'back.out(1.7)' }
       );
       
-      // Animate text content
+      // Animate text content with more dynamic effects
       mainTl.fromTo(textRef.current.children,
-        { x: -100, opacity: 0 },
-        { x: 0, opacity: 1, stagger: 0.2, duration: 0.8 },
+        { x: -100, opacity: 0, rotationY: -15 },
+        { x: 0, opacity: 1, rotationY: 0, stagger: 0.2, duration: 0.8, ease: 'power3.out' },
         '-=0.3'
       );
       
-      // Animate 3D model container
+      // Enhanced 3D model animation
       mainTl.fromTo(modelRef.current,
-        { x: 100, opacity: 0, rotationY: 15 },
-        { x: 0, opacity: 1, rotationY: 0, duration: 1, ease: 'back.out(1.7)' },
+        { x: 100, opacity: 0, rotationY: 15, scale: 0.8 },
+        { x: 0, opacity: 1, rotationY: 0, scale: 1, duration: 1, ease: 'back.out(1.7)' },
         '-=0.5'
       );
       
-      // Animate decorative elements
+      // Animate decorative elements with bounce
       mainTl.fromTo('.decorative-element',
-        { scale: 0, opacity: 0 },
-        { scale: 1, opacity: 1, stagger: 0.1, duration: 0.5 },
+        { scale: 0, opacity: 0, rotation: 180 },
+        { scale: 1, opacity: 1, rotation: 0, stagger: 0.1, duration: 0.5, ease: 'elastic.out(1, 0.8)' },
         '-=0.3'
       );
       
-      // Animate order button
+      // Enhanced order button animation
       mainTl.fromTo(buttonRef.current,
-        { scale: 0, rotation: -180 },
-        { scale: 1, rotation: 0, duration: 0.7, ease: 'elastic.out(1, 0.8)' },
+        { scale: 0, rotation: -180, y: 50 },
+        { scale: 1, rotation: 0, y: 0, duration: 0.7, ease: 'elastic.out(1, 0.8)' },
         '-=0.2'
       );
       
-      // Continuous animations
+      // Continuous floating animations
       gsap.to('.floating-element', {
         y: 10,
         duration: 2,
@@ -90,17 +98,113 @@ const HeroSection = () => {
         ease: 'sine.inOut'
       });
       
+      // Continuous rotation animations
       gsap.to('.rotating-element', {
         rotation: 360,
         duration: 15,
         repeat: -1,
         ease: 'none'
       });
+
+      // Add pulsing effect to the main heading
+      gsap.to('.main-heading', {
+        scale: 1.02,
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut'
+      });
+    };
+
+    // Setup scroll-triggered animations
+    const setupScrollAnimations = () => {
+      // Parallax effect for background elements
+      gsap.to('.decorative-element', {
+        y: -100,
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1
+        }
+      });
+
+      // Text reveal on scroll
+      gsap.fromTo('.scroll-reveal', 
+        { y: 100, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          stagger: 0.2,
+          scrollTrigger: {
+            trigger: '.scroll-reveal',
+            start: 'top 80%',
+            end: 'bottom 20%',
+            toggleActions: 'play none none reverse'
+          }
+        }
+      );
+    };
+
+    // Setup interactive animations
+    const setupInteractiveAnimations = () => {
+      // Hover animations for navigation items
+      const navItems = navRef.current?.querySelectorAll('a');
+      navItems?.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+          gsap.to(item, { scale: 1.1, duration: 0.3, ease: 'power2.out' });
+        });
+        item.addEventListener('mouseleave', () => {
+          gsap.to(item, { scale: 1, duration: 0.3, ease: 'power2.out' });
+        });
+      });
+
+      // Enhanced button hover effects
+      if (buttonRef.current) {
+        buttonRef.current.addEventListener('mouseenter', () => {
+          gsap.to(buttonRef.current, { 
+            scale: 1.1, 
+            rotation: 5,
+            duration: 0.3, 
+            ease: 'power2.out' 
+          });
+        });
+        buttonRef.current.addEventListener('mouseleave', () => {
+          gsap.to(buttonRef.current, { 
+            scale: 1, 
+            rotation: 0,
+            duration: 0.3, 
+            ease: 'power2.out' 
+          });
+        });
+      }
+
+      // 3D model hover effect
+      if (modelRef.current) {
+        modelRef.current.addEventListener('mouseenter', () => {
+          gsap.to(modelRef.current, { 
+            scale: 1.05, 
+            rotationY: 5,
+            duration: 0.5, 
+            ease: 'power2.out' 
+          });
+        });
+        modelRef.current.addEventListener('mouseleave', () => {
+          gsap.to(modelRef.current, { 
+            scale: 1, 
+            rotationY: 0,
+            duration: 0.5, 
+            ease: 'power2.out' 
+          });
+        });
+      }
     };
 
     return () => {
-      // Clean up animations if needed
+      // Clean up animations and event listeners
       loadingTl.kill();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
 
@@ -160,11 +264,11 @@ const HeroSection = () => {
         </nav>
 
         {/* Main Content */}
-        <div className="flex items-center justify-between min-h-screen pt-20 px-6">
+        <div className="flex flex-col lg:flex-row items-center justify-between min-h-screen pt-24 px-4 sm:px-6 lg:px-8 pb-8 gap-8 lg:gap-0">
           {/* Left Side - Text Content */}
-          <div ref={textRef} className="flex-1 max-w-2xl">
+          <div ref={textRef} className="flex-1 max-w-2xl lg:pr-8 pr-0 text-center lg:text-left">
             {/* Main Heading */}
-            <h1 className="text-8xl md:text-9xl font-black text-pink-500 leading-none mb-6 transform -skew-x-12">
+            <h1 className="main-heading text-8xl md:text-9xl font-black text-pink-500 leading-none mb-6 transform -skew-x-12">
               COOKING
               <br />
               <span className="text-pink-400">DREAMS</span>
@@ -199,11 +303,11 @@ const HeroSection = () => {
           </div>
 
           {/* Right Side - 3D Cooking Model */}
-          <div className="flex-1 flex justify-center items-center relative">
+          <div className="flex-1 flex justify-center items-center relative lg:pl-8 pl-0">
             {/* 3D Cooking Model Container */}
             <div 
               ref={modelRef}
-              className="w-80 h-80 bg-gradient-to-br from-pink-200 to-pink-400 rounded-2xl shadow-2xl relative overflow-hidden"
+              className="w-64 h-64 sm:w-80 sm:h-80 bg-gradient-to-br from-pink-200 to-pink-400 rounded-2xl shadow-2xl relative overflow-hidden"
             >
               {/* 3D Cooking Model */}
               <CookingModel3D modelPath="/three_d_models/3december_2021_day_9_cooking.glb" />
@@ -222,7 +326,7 @@ const HeroSection = () => {
         </div>
 
         {/* Order Now Button */}
-        <div className="absolute bottom-8 right-8">
+        <div className="absolute bottom-8 right-8 lg:bottom-12 lg:right-12">
           <button 
             ref={buttonRef}
             className="group relative w-24 h-24 bg-pink-500 rounded-full flex items-center justify-center hover:bg-pink-600 transition-all duration-300 hover:scale-110 shadow-2xl"
@@ -235,7 +339,7 @@ const HeroSection = () => {
         </div>
 
         {/* Decorative Arrow */}
-        <div className="absolute bottom-32 left-16">
+        <div className="absolute bottom-32 left-16 lg:bottom-40 lg:left-20">
           <div className="flex items-center space-x-2 text-orange-500">
             <svg className="w-8 h-8 floating-element" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clipRule="evenodd"/>
@@ -245,8 +349,8 @@ const HeroSection = () => {
         </div>
 
         {/* Background decorative elements */}
-        <div className="decorative-element absolute top-1/4 left-10 w-32 h-32 bg-pink-200 rounded-full opacity-20 blur-xl"></div>
-        <div className="decorative-element absolute bottom-1/4 right-10 w-40 h-40 bg-green-200 rounded-full opacity-20 blur-xl"></div>
+        <div className="decorative-element absolute top-1/4 left-8 lg:left-16 w-24 h-24 lg:w-32 lg:h-32 bg-pink-200 rounded-full opacity-20 blur-xl"></div>
+        <div className="decorative-element absolute bottom-1/4 right-8 lg:right-16 w-32 h-32 lg:w-40 lg:h-40 bg-green-200 rounded-full opacity-20 blur-xl"></div>
       </div>
     </>
   );

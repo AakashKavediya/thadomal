@@ -1,5 +1,10 @@
 "use client"
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
 
 export default function App() {
   const [recipes, setRecipes] = useState([]);
@@ -10,6 +15,11 @@ export default function App() {
   const [cuisines, setCuisines] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [activeTab, setActiveTab] = useState("ingredients");
+  
+  const mainRef = useRef(null);
+  const searchRef = useRef(null);
+  const resultsRef = useRef(null);
+  const modalRef = useRef(null);
 
   useEffect(() => {
     fetch("https://www.themealdb.com/api/json/v1/1/list.php?c=list")
@@ -21,7 +31,109 @@ export default function App() {
       .then((data) => setCuisines(data.meals || []));
   }, []);
 
+  // Initial page animations
+  useEffect(() => {
+    const pageTl = gsap.timeline();
+    
+    // Animate title
+    pageTl.fromTo('h1',
+      { y: -50, opacity: 0, scale: 0.8 },
+      { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: 'back.out(1.7)' }
+    );
+    
+    // Animate search form
+    pageTl.fromTo(searchRef.current?.children,
+      { y: 50, opacity: 0 },
+      { y: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: 'power2.out' },
+      '-=0.4'
+    );
+    
+    // Animate search button
+    pageTl.fromTo('.search-button',
+      { scale: 0, rotation: -180 },
+      { scale: 1, rotation: 0, duration: 0.7, ease: 'elastic.out(1, 0.8)' },
+      '-=0.3'
+    );
+
+    // Setup scroll animations
+    const setupScrollAnimations = () => {
+      gsap.fromTo('.recipe-card',
+        { y: 100, opacity: 0, scale: 0.8 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: 'back.out(1.7)',
+          scrollTrigger: {
+            trigger: '.recipe-card',
+            start: 'top 80%',
+            end: 'bottom 20%',
+            toggleActions: 'play none none reverse'
+          }
+        }
+      );
+    };
+
+    // Setup interactive animations
+    const setupInteractiveAnimations = () => {
+      // Search form hover effects
+      const inputs = document.querySelectorAll('input, select');
+      inputs.forEach(input => {
+        input.addEventListener('focus', () => {
+          gsap.to(input, { 
+            scale: 1.02, 
+            duration: 0.3, 
+            ease: 'power2.out' 
+          });
+        });
+        input.addEventListener('blur', () => {
+          gsap.to(input, { 
+            scale: 1, 
+            duration: 0.3, 
+            ease: 'power2.out' 
+          });
+        });
+      });
+
+      // Button hover effects
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach(button => {
+        button.addEventListener('mouseenter', () => {
+          gsap.to(button, { 
+            scale: 1.05, 
+            duration: 0.2, 
+            ease: 'power2.out' 
+          });
+        });
+        button.addEventListener('mouseleave', () => {
+          gsap.to(button, { 
+            scale: 1, 
+            duration: 0.2, 
+            ease: 'power2.out' 
+          });
+        });
+      });
+    };
+
+    setupScrollAnimations();
+    setupInteractiveAnimations();
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
+
   const handleSearch = async () => {
+    // Animate search button
+    gsap.to('.search-button', { 
+      scale: 0.95, 
+      duration: 0.1, 
+      yoyo: true, 
+      repeat: 1 
+    });
+
     let url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`;
     const res = await fetch(url);
     const data = await res.json();
@@ -46,6 +158,14 @@ export default function App() {
     }
 
     setRecipes(results);
+    
+    // Animate results appearance
+    setTimeout(() => {
+      gsap.fromTo('.recipe-card',
+        { y: 100, opacity: 0, scale: 0.8 },
+        { y: 0, opacity: 1, scale: 1, stagger: 0.1, duration: 0.6, ease: 'back.out(1.7)' }
+      );
+    }, 100);
   };
 
   const openRecipe = async (id) => {
@@ -55,6 +175,14 @@ export default function App() {
     const data = await res.json();
     setSelectedRecipe(data.meals[0]);
     setActiveTab("ingredients");
+    
+    // Animate modal appearance
+    setTimeout(() => {
+      gsap.fromTo(modalRef.current,
+        { scale: 0.8, opacity: 0, y: 50 },
+        { scale: 1, opacity: 1, y: 0, duration: 0.5, ease: 'back.out(1.7)' }
+      );
+    }, 100);
   };
 
   const getIngredients = (recipe) => {
@@ -70,13 +198,13 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-800">
+    <div ref={mainRef} className="min-h-screen bg-gray-100 text-gray-800">
       <div className="max-w-5xl mx-auto p-6">
         <h1 className="text-4xl font-extrabold text-center text-gray-900 mb-8">
           Advanced Recipe Search
         </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div ref={searchRef} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <input
             type="text"
             placeholder="Search by name"
@@ -113,17 +241,17 @@ export default function App() {
         <div className="text-center">
           <button
             onClick={handleSearch}
-            className="px-6 py-3 rounded-lg bg-indigo-600 text-white font-semibold shadow hover:bg-indigo-700 transition"
+            className="search-button px-6 py-3 rounded-lg bg-indigo-600 text-white font-semibold shadow hover:bg-indigo-700 transition"
           >
             Search
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
+        <div ref={resultsRef} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
           {recipes.map((r) => (
             <div
               key={r.idMeal}
-              className="bg-white rounded-xl shadow hover:shadow-lg cursor-pointer overflow-hidden transition"
+              className="recipe-card bg-white rounded-xl shadow hover:shadow-lg cursor-pointer overflow-hidden transition"
               onClick={() => openRecipe(r.idMeal)}
             >
               <img
@@ -146,7 +274,7 @@ export default function App() {
         {/* Modal */}
         {selectedRecipe && (
           <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-            <div className="bg-white rounded-xl shadow-lg max-w-3xl w-full p-6 relative max-h-[90vh] overflow-y-auto">
+            <div ref={modalRef} className="bg-white rounded-xl shadow-lg max-w-3xl w-full p-6 relative max-h-[90vh] overflow-y-auto">
               <button
                 onClick={() => setSelectedRecipe(null)}
                 className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-2xl"

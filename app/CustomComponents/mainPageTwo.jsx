@@ -1,8 +1,17 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
 
 const MainPageTwo = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
+    const mainRef = useRef(null);
+    const heroRef = useRef(null);
+    const cardsRef = useRef(null);
+    const sidebarRef = useRef(null);
 
     const craveWorthyDishes = [
         {
@@ -56,8 +65,143 @@ const MainPageTwo = () => {
         setCurrentSlide((prev) => (prev - 1 + craveWorthyDishes.length) % craveWorthyDishes.length);
     };
 
+    useEffect(() => {
+        // Initial page animations
+        const pageTl = gsap.timeline();
+        
+        // Animate hero section
+        pageTl.fromTo(heroRef.current?.children,
+            { y: 50, opacity: 0 },
+            { y: 0, opacity: 1, stagger: 0.2, duration: 0.8, ease: 'power2.out' }
+        );
+        
+        // Animate main content cards
+        pageTl.fromTo(cardsRef.current?.children,
+            { x: -100, opacity: 0, rotationY: -15 },
+            { x: 0, opacity: 1, rotationY: 0, stagger: 0.1, duration: 0.6, ease: 'back.out(1.7)' },
+            '-=0.4'
+        );
+        
+        // Animate sidebar
+        pageTl.fromTo(sidebarRef.current?.children,
+            { x: 100, opacity: 0, rotationY: 15 },
+            { x: 0, opacity: 1, rotationY: 0, stagger: 0.1, duration: 0.6, ease: 'back.out(1.7)' },
+            '-=0.3'
+        );
+
+        // Setup scroll-triggered animations
+        const setupScrollAnimations = () => {
+            // Parallax effect for hero image
+            gsap.to(heroRef.current?.querySelector('img'), {
+                y: -100,
+                scrollTrigger: {
+                    trigger: heroRef.current,
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: 1
+                }
+            });
+
+            // Card reveal animations
+            gsap.fromTo('.recipe-card',
+                { y: 100, opacity: 0, scale: 0.8 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.8,
+                    stagger: 0.1,
+                    ease: 'back.out(1.7)',
+                    scrollTrigger: {
+                        trigger: '.recipe-card',
+                        start: 'top 80%',
+                        end: 'bottom 20%',
+                        toggleActions: 'play none none reverse'
+                    }
+                }
+            );
+
+            // Sidebar animations
+            gsap.fromTo('.sidebar-section',
+                { x: 50, opacity: 0 },
+                {
+                    x: 0,
+                    opacity: 1,
+                    duration: 0.6,
+                    stagger: 0.2,
+                    ease: 'power2.out',
+                    scrollTrigger: {
+                        trigger: '.sidebar-section',
+                        start: 'top 80%',
+                        end: 'bottom 20%',
+                        toggleActions: 'play none none reverse'
+                    }
+                }
+            );
+        };
+
+        // Setup interactive animations
+        const setupInteractiveAnimations = () => {
+            // Card hover effects
+            const cards = document.querySelectorAll('.recipe-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    gsap.to(card, { 
+                        scale: 1.05, 
+                        y: -10,
+                        duration: 0.3, 
+                        ease: 'power2.out' 
+                    });
+                });
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, { 
+                        scale: 1, 
+                        y: 0,
+                        duration: 0.3, 
+                        ease: 'power2.out' 
+                    });
+                });
+            });
+
+            // Button hover effects
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', () => {
+                    gsap.to(button, { 
+                        scale: 1.05, 
+                        duration: 0.2, 
+                        ease: 'power2.out' 
+                    });
+                });
+                button.addEventListener('mouseleave', () => {
+                    gsap.to(button, { 
+                        scale: 1, 
+                        duration: 0.2, 
+                        ease: 'power2.out' 
+                    });
+                });
+            });
+        };
+
+        setupScrollAnimations();
+        setupInteractiveAnimations();
+
+        return () => {
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        };
+    }, []);
+
+    // Animate slide transitions
+    useEffect(() => {
+        const cards = document.querySelectorAll('.recipe-card');
+        gsap.fromTo(cards,
+            { x: 100, opacity: 0, rotationY: 15 },
+            { x: 0, opacity: 1, rotationY: 0, stagger: 0.1, duration: 0.5, ease: 'back.out(1.7)' }
+        );
+    }, [currentSlide]);
+
     return (
-        <div className="min-h-screen bg-black text-white">
+        <div ref={mainRef} className="min-h-screen bg-black text-white">
             {/* Header */}
             <header className="bg-black border-b border-gray-800 sticky top-0 z-50">
                 <div className="container mx-auto px-6 py-4">
@@ -102,7 +246,7 @@ const MainPageTwo = () => {
                     {/* Left Column - Main Content */}
                     <div className="lg:col-span-2 space-y-12">
                         {/* Hero Section */}
-                        <section className="space-y-6">
+                        <section ref={heroRef} className="space-y-6">
                             <div className="space-y-4">
                                 <h2 className="text-5xl md:text-6xl font-bold leading-tight">
                                     88 All-Time Best Dinner Recipes to{' '}
@@ -160,11 +304,11 @@ const MainPageTwo = () => {
                             </div>
 
                             {/* Recipe Cards */}
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 {craveWorthyDishes.map((dish, index) => (
                                     <div 
                                         key={dish.id}
-                                        className={`bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 ${
+                                        className={`recipe-card bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 ${
                                             index === currentSlide ? 'ring-2 ring-orange-500' : ''
                                         }`}
                                     >
@@ -193,9 +337,9 @@ const MainPageTwo = () => {
                     </div>
 
                     {/* Right Column - Sidebar */}
-                    <div className="space-y-8">
+                    <div ref={sidebarRef} className="space-y-8">
                         {/* Fan Favorites */}
-                        <section className="bg-gray-900 rounded-2xl p-6">
+                        <section className="sidebar-section bg-gray-900 rounded-2xl p-6">
                             <h3 className="text-2xl font-bold mb-6">Fan Favorites</h3>
                             <div className="grid grid-cols-2 gap-4">
                                 {fanFavorites.map((item) => (
@@ -215,7 +359,7 @@ const MainPageTwo = () => {
                         </section>
 
                         {/* Dinner Favorites */}
-                        <section className="bg-gray-900 rounded-2xl p-6">
+                        <section className="sidebar-section bg-gray-900 rounded-2xl p-6">
                             <h3 className="text-2xl font-bold mb-4">Dinner Favorites You'll Crave Again and Again</h3>
                             <p className="text-gray-300 mb-6">
                                 Discover 88 delicious dinner recipes that are easy to make, full of flavor, and family-approved.
