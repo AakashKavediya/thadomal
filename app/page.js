@@ -61,45 +61,13 @@ export default function HomePage() {
 
   return(
     <div>
-      <Header />
-      <div className="pt-0"> {/* Add padding to account for fixed header */}
+      <Header onNavigate={setCurrentPage} active={currentPage} />
+      <div className="pt-24 md:pt-28"> {/* Space for fixed header */}
         {renderPage()}
       </div>
       
       {/* Navigation buttons for demo */}
-      <div className="fixed bottom-4 right-4 z-50 flex flex-col space-y-2">
-        <button 
-          onClick={() => setCurrentPage('hero')}
-          className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors"
-        >
-          Hero
-        </button>
-        <button 
-          onClick={() => setCurrentPage('search')}
-          className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
-        >
-          Search
-        </button>
-        <button 
-          onClick={() => setCurrentPage('suggestions')}
-          className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-        >
-          Suggestions
-        </button>
-        <button 
-          onClick={() => setCurrentPage('RecipeNutritionCalculator')}
-          className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
-        >
-          Main Page
-        </button>
-        
-        <button 
-          onClick={() => setCurrentPage('login')}
-          className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
-        >
-          Login
-        </button>
-      </div>
+     
     </div>
   )
 }

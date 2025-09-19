@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Link from "next/link"
@@ -7,7 +7,8 @@ import Link from "next/link"
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
-const Header = () => {
+const Header = ({ onNavigate, active }) => {
+    const [isOpen, setIsOpen] = useState(false);
     const headerRef = useRef(null);
     const logoRef = useRef(null);
     const navRef = useRef(null);
@@ -41,9 +42,9 @@ const Header = () => {
         const setupScrollAnimations = () => {
             // Header background change on scroll
             gsap.to(headerRef.current, {
-                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                backgroundColor: 'rgba(17, 24, 39, 0.6)',
                 backdropFilter: 'blur(10px)',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.35)',
                 scrollTrigger: {
                     trigger: 'body',
                     start: 'top -50px',
@@ -67,12 +68,12 @@ const Header = () => {
         // Setup interactive animations
         const setupInteractiveAnimations = () => {
             // Navigation hover effects
-            const navItems = navRef.current?.querySelectorAll('a');
+            const navItems = navRef.current?.querySelectorAll('button');
             navItems?.forEach(item => {
                 item.addEventListener('mouseenter', () => {
                     gsap.to(item, { 
                         scale: 1.1, 
-                        color: '#ec4899',
+                        color: '#a78bfa',
                         duration: 0.3, 
                         ease: 'power2.out' 
                     });
@@ -80,7 +81,7 @@ const Header = () => {
                 item.addEventListener('mouseleave', () => {
                     gsap.to(item, { 
                         scale: 1, 
-                        color: '#374151',
+                        color: '#d1d5db',
                         duration: 0.3, 
                         ease: 'power2.out' 
                     });
@@ -115,6 +116,14 @@ const Header = () => {
         };
     }, []);
 
+    const handleNavigate = (key) => {
+        if (onNavigate) onNavigate(key);
+        setIsOpen(false);
+        if (typeof window !== 'undefined') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
+
     return(
         <header ref={headerRef} className="fixed top-0 inset-x-0 z-40">
             <div className="backdrop-blur bg-black/30 border-b border-gray-700/60">
@@ -124,14 +133,42 @@ const Header = () => {
                         <span className="text-xl font-extrabold text-accent tracking-wide">Culinary Explorer</span>
                     </div>
                     <nav ref={navRef} className="hidden md:flex items-center space-x-6">
-                        <a className="text-gray-300 hover:text-white transition-colors cursor-default">Search</a>
-                        <a className="text-gray-300 hover:text-white transition-colors cursor-default">Suggestions</a>
-                        <a className="text-gray-300 hover:text-white transition-colors cursor-default">Tools</a>
+                        <button onClick={() => handleNavigate('hero')} className={`pb-1 focus:outline-none focus:ring-2 focus:ring-purple-500 rounded ${active === 'hero' ? 'text-white border-b-2 border-purple-500' : 'text-gray-300 hover:text-white'}`}>Hero</button>
+                        <button onClick={() => handleNavigate('search')} className={`pb-1 focus:outline-none focus:ring-2 focus:ring-purple-500 rounded ${active === 'search' ? 'text-white border-b-2 border-purple-500' : 'text-gray-300 hover:text-white'}`}>Search</button>
+                        <button onClick={() => handleNavigate('suggestions')} className={`pb-1 focus:outline-none focus:ring-2 focus:ring-purple-500 rounded ${active === 'suggestions' ? 'text-white border-b-2 border-purple-500' : 'text-gray-300 hover:text-white'}`}>Suggestions</button>
+                        <button onClick={() => handleNavigate('RecipeNutritionCalculator')} className={`pb-1 focus:outline-none focus:ring-2 focus:ring-purple-500 rounded ${active === 'RecipeNutritionCalculator' ? 'text-white border-b-2 border-purple-500' : 'text-gray-300 hover:text-white'}`}>Main Page</button>
+                        <button onClick={() => handleNavigate('login')} className={`pb-1 focus:outline-none focus:ring-2 focus:ring-purple-500 rounded ${active === 'login' ? 'text-white border-b-2 border-purple-500' : 'text-gray-300 hover:text-white'}`}>Login</button>
                     </nav>
                     <div ref={menuRef} className="flex items-center space-x-2">
-                        <button className="px-3 py-1.5 rounded-lg btn-accent text-sm font-semibold shadow-dark">Get Started</button>
+                        <button className="hidden md:inline px-3 py-1.5 rounded-lg btn-accent text-sm font-semibold shadow-dark">Get Started</button>
+                        <button
+                          className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg border border-gray-700 text-gray-300 hover:text-white hover:border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                          aria-label="Toggle menu"
+                          aria-expanded={isOpen}
+                          onClick={() => setIsOpen(!isOpen)}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            {isOpen ? (
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            ) : (
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                            )}
+                          </svg>
+                        </button>
                     </div>
                 </div>
+                {isOpen && (
+                  <div className="md:hidden border-t border-gray-700/60">
+                    <div className="px-4 py-3 space-y-2 bg-black/50 backdrop-blur">
+                      <button onClick={() => handleNavigate('hero')} className={`block w-full text-left px-3 py-2 rounded-md ${active === 'hero' ? 'bg-gray-800 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-800'}`}>Hero</button>
+                      <button onClick={() => handleNavigate('search')} className={`block w-full text-left px-3 py-2 rounded-md ${active === 'search' ? 'bg-gray-800 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-800'}`}>Search</button>
+                      <button onClick={() => handleNavigate('suggestions')} className={`block w-full text-left px-3 py-2 rounded-md ${active === 'suggestions' ? 'bg-gray-800 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-800'}`}>Suggestions</button>
+                      <button onClick={() => handleNavigate('RecipeNutritionCalculator')} className={`block w-full text-left px-3 py-2 rounded-md ${active === 'RecipeNutritionCalculator' ? 'bg-gray-800 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-800'}`}>Main Page</button>
+                      <button onClick={() => handleNavigate('login')} className={`block w-full text-left px-3 py-2 rounded-md ${active === 'login' ? 'bg-gray-800 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-800'}`}>Login</button>
+                      <button className="w-full px-3 py-2 rounded-lg btn-accent text-sm font-semibold shadow-dark">Get Started</button>
+                    </div>
+                  </div>
+                )}
             </div>
         </header>
     )
