@@ -8,29 +8,21 @@ const SecurityFeatures = () => {
           {/* Neural Intelligence Box */}
           <div className="relative bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-700">
             <div className="absolute inset-x-0 -top-0.5 h-1 rounded-t-2xl bg-gradient-to-r from-purple-500 to-indigo-500" />
-            <h2 className="text-2xl font-bold text-white mb-4">Neural Intelligence</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">For AI-Powered Recipe Suggestions 
+            </h2>
             <p className="text-gray-300 mb-4">
-              Our AI agents don't just detect threats, they collaborate to predict them. With multiple self-hosted neural agents, 
-              we identify and anticipate attack patterns before they arise.
+             Our AI assistant breathes new life into your kitchen, transforming the food you already have into fresh inspiration. It's a smarter way to cook, tailored to your unique taste, that helps you save food, money, and time with every meal.
+ 
             </p>
             <ul className="space-y-2">
               <li className="flex items-center">
-                <svg className="w-5 h-5 text-purple-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span className="text-gray-200">Distributed predictive analysis</span>
+                
               </li>
               <li className="flex items-center">
-                <svg className="w-5 h-5 text-purple-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span className="text-gray-200">Multi-agent pattern recognition</span>
+                
               </li>
               <li className="flex items-center">
-                <svg className="w-5 h-5 text-purple-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span className="text-gray-200">Autonomy self-learning systems</span>
+                
               </li>
             </ul>
           </div>
@@ -38,29 +30,21 @@ const SecurityFeatures = () => {
           {/* Real-Time Protection Box */}
           <div className="relative bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-700">
             <div className="absolute inset-x-0 -top-0.5 h-1 rounded-t-2xl bg-gradient-to-r from-purple-500 to-indigo-500" />
-            <h2 className="text-2xl font-bold text-white mb-4">Real-Time Protection</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">For Nutritional Analysis
+            </h2>
             <p className="text-gray-300 mb-4">
-              Millisecond response times ensure threats are neutralized the moment they're detected. 
-              Our systems never sleep, never pause.
+            Food is fuel for life's journey. We empower you to make confident wellness choices by making nutrition transparent and simple. With a detailed analysis of calories, macros, and essential nutrients on every recipe, you can create meals that not only taste incredible but also make you feel your absolute best.
+
             </p>
             <ul className="space-y-2">
               <li className="flex items-center">
-                <svg className="w-5 h-5 text-indigo-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span className="text-gray-200">Instant response</span>
+                
               </li>
               <li className="flex items-center">
-                <svg className="w-5 h-5 text-indigo-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span className="text-gray-200">Continuous monitoring</span>
+               
               </li>
               <li className="flex items-center">
-                <svg className="w-5 h-5 text-indigo-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span className="text-gray-200">Zero downtime</span>
+               
               </li>
             </ul>
           </div>
@@ -68,29 +52,21 @@ const SecurityFeatures = () => {
           {/* Global Scale Box */}
           <div className="relative bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-700">
             <div className="absolute inset-x-0 -top-0.5 h-1 rounded-t-2xl bg-gradient-to-r from-purple-500 to-indigo-500" />
-            <h2 className="text-2xl font-bold text-white mb-4">Global Scale</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">For Advanced Recipe Search
+            </h2>
+
             <p className="text-gray-300 mb-4">
-              Protecting organizations worldwide with a unified security intelligence network 
-              that grows stronger with every connection.
+            Your cravings, perfectly matched. Our powerful search helps you instantly find the exact recipe you’re looking for, no matter how specific. Effortlessly filter by dietary needs like gluten-free or vegan, explore global cuisines, or find a delicious meal that fits your schedule—even if you only have 30 minutes. We cut through the noise, transforming your specific craving into the perfect meal, right when you need it.
             </p>
             <ul className="space-y-2">
               <li className="flex items-center">
-                <svg className="w-5 h-5 text-purple-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span className="text-gray-200">Worldwide coverage</span>
+               
               </li>
               <li className="flex items-center">
-                <svg className="w-5 h-5 text-purple-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span className="text-gray-200">Shared intelligence</span>
+              
               </li>
               <li className="flex items-center">
-                <svg className="w-5 h-5 text-purple-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span className="text-gray-200">Collective protection</span>
+                
               </li>
             </ul>
           </div>
