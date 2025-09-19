@@ -25,7 +25,7 @@ export default function HomePage() {
   return(
     <div>
       <Header />
-      <div className="pt-20"> {/* Add padding to account for fixed header */}
+      <div className="pt-0"> {/* Add padding to account for fixed header */}
         {renderPage()}
       </div>
       
